@@ -15,3 +15,16 @@ class VocationClass(APIView):
         # serializer = MySerializer(instance=p, many=True)
         serializer = VocationSerializer(instance=p, many=True)
         return Response(serializer.data)
+
+    def post(self, request):
+        id = request.data.get('id', 0)
+        operation = Vocation.objects.filter(id=id).first()
+        # 数据验证
+        serializer = VocationSerializer(data=request.data)
+        if serializer.is_valid():
+            if operation:
+                serializer.updata(operation, request.data)
+            else:
+                serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.data, status=404)
