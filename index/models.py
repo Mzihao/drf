@@ -19,7 +19,7 @@ class Vocation(models.Model):
     job = models.CharField(max_length=20)
     title = models.CharField(max_length=20)
     payment = models.IntegerField(null=True, blank=True)
-    name = models.ForeignKey(PersonInfo, on_delete=models.Case)
+    info = models.ForeignKey(PersonInfo, on_delete=models.Case)
 
     def __str__(self):
         return self.id
