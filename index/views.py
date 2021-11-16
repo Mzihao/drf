@@ -23,7 +23,8 @@ class VocationClass(APIView):
 
     def post(self, request):
         data = request.data
-        print(data)
+        if not data:
+            return Response({'msg': 'hello Martin', 'code': 200, 'tip': '你没有填信息哦'}, status=200)
         id = request.data.get('id', 0)  # 3
         operation = Vocation.objects.filter(id=id).first()
         # 数据验证

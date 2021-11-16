@@ -31,28 +31,16 @@ class VocationSerializer(serializers.ModelSerializer):
             p = PersonInfo.objects.create(**info)
         data = validated_data
         data['info'] = p
-        print(data)
         v = Vocation.objects.create(**data)
         return v
 
     def updata(self, validated_data):
         info = validated_data.get('info', '')
-        id = validated_data('id', 0)
-        p = PersonInfo.objects.filter(id=id).first()
+        id = validated_data.get('id', 0)
+        p = PersonInfo.objects.filter(id=info['id']).first()
         if p:
-            p = PersonInfo.objects.filter(id=id).update(**info)
+            p = PersonInfo.objects.filter(id=info['id']).update(**info)
             data = validated_data
             data['info'] = p
-            id = validated_data.get('id', '')
             v = Vocation.objects.filter(id=id).update(**data)
             return v
-        # info = validated_data.get('info')
-        # p_id = info.get('id', 0)
-        # p = PersonInfo.objects.filter(id=p_id).first()
-        # if p:
-        #     PersonInfo.objects.filter(id=p_id).update(**info)
-        #     v_data = validated_data
-        #     v_data['info'] = p_id
-        #     v_id = v_data.get('id', 0)
-        #     v = Vocation.objects.filter(id=v_id).update(**v_data)
-        #     return v
