@@ -36,7 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'index.apps.IndexConfig',
-    'rest_framework'
+    'rest_framework',
+    'drf_yasg',
 ]
 
 REST_FRAMEWORK = {
@@ -92,7 +93,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'DRF_study',
         'USER': 'root',
-        'PASSWORD': 'wangt777',
+        'PASSWORD': 'root',
         'HOST': '127.0.0.1',
         'POST': 3306,
 
@@ -147,3 +148,29 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
 #     'REFRESH_TOKEN_LIFETIME': timedelta(days=10),
 # }
+
+SWAGGER_SETTINGS = {
+    'LOGIN_URL': '/pumpkin/login',
+    'LOGOUT_URL': '/pumpkin/logout',
+    'PERSIST_AUTH': True,
+    'REFETCH_SCHEMA_WITH_AUTH': True,
+    'REFETCH_SCHEMA_ON_LOGOUT': True,
+
+    'DEFAULT_INFO': 'DRF_study.urls.swagger_info',
+
+    'SECURITY_DEFINITIONS': {
+        'Basic': {  # 默认cookie认证
+            'type': 'basic'
+        },
+        'Bearer': {  # 通过header中的authorization验证
+            'type': 'apiKey',
+            'name': 'authorization',
+            'in': 'header'
+        },
+        'Query': {  # 通过query中的auth验证
+            'type': 'apiKey',
+            'name': 'auth',
+            'in': 'query'
+        }
+    }
+}
