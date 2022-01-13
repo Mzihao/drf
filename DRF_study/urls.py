@@ -8,18 +8,19 @@ from django.urls import path, include, re_path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 swagger_info = openapi.Info(
-    title="Snippets API",
+    title="Swagger API",
     default_version='v1',
-    description="""这是一个`Django Rest Framework`和`Swagger`的demo.
+    description="""
+                这是一个`Django Rest Framework`和`Swagger`的demo.
                 The `swagger-ui` view can be found [here](/cached/swagger).
                 The `ReDoc` view can be found [here](/cached/redoc).
                 The swagger YAML document can be found [here](/cached/swagger.yaml).
                 The swagger JSON document can be found [here](/cached/swagger.json).
-                You can log in using the pre-existing `admin` user with password `passwordadmin`.
+                You can login using the pre-existing `admin` user with password `passwordadmin`.
                 """,
-    terms_of_service="https://www.google.com/policies/terms/",
-    contact=openapi.Contact(email="contact@snippets.local"),
-    license=openapi.License(name="BSD License"),
+    # terms_of_service="https://www.google.com/policies/terms/",
+    # contact=openapi.Contact(email="contact@snippets.local"),
+    # license=openapi.License(name="BSD License"),
 )
 
 SchemaView = get_schema_view(
@@ -43,13 +44,13 @@ def root_redirect(request):
 
 urlpatterns = [
     path('pumpkin/', admin.site.urls),
-    path('index/', include('index.urls')),
+    path('', include('index.urls')),
     re_path(r'^swagger(?P<format>.json|.yaml)$', SchemaView.without_ui(cache_timeout=0), name='schema-json'),
-    re_path(r'^swagger/$', SchemaView.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    re_path(r'^redoc/$', SchemaView.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    re_path(r'^redoc-old/$', SchemaView.with_ui('redoc-old', cache_timeout=0), name='schema-redoc-old'),
+    path('docs/', SchemaView.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path(r'redoc/', SchemaView.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path(r'redoc-old/', SchemaView.with_ui('redoc-old', cache_timeout=0), name='schema-redoc-old'),
     re_path(r'^cached/swagger(?P<format>.json|.yaml)$', SchemaView.without_ui(cache_timeout=None), name='cschema-json'),
-    re_path(r'^cached/swagger/$', SchemaView.with_ui('swagger', cache_timeout=None), name='cschema-swagger-ui'),
-    re_path(r'^cached/redoc/$', SchemaView.with_ui('redoc', cache_timeout=None), name='cschema-redoc'),
-    re_path(r'^$', root_redirect),
+    path('cached/swagger/', SchemaView.with_ui('swagger', cache_timeout=None), name='cschema-swagger-ui'),
+    path('cached/redoc/', SchemaView.with_ui('redoc', cache_timeout=None), name='cschema-redoc'),
+    # re_path(r'^$', root_redirect),
 ]
