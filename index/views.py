@@ -16,8 +16,13 @@ class VocationClass(APIView):
     # permission_classes = [IsAdminUser]
     permission_classes = [IsAdminUserOrReadOnly]
 
-    @swagger_auto_schema(tags=['info'], operation_summary='查询员工信息')
-    def get(self, request):
+    @swagger_auto_schema(manual_parameters=[
+        openapi.Parameter('id', openapi.IN_PATH, description='编号', type=openapi.TYPE_INTEGER, required=True),
+        openapi.Parameter('page', openapi.IN_QUERY, description='页数', type=openapi.TYPE_INTEGER, required=False),
+        openapi.Parameter('pageSize', openapi.IN_QUERY, description='size', type=openapi.TYPE_INTEGER, required=False)
+    ], tags=['info'], operation_summary='查询员工信息', responses={200: VocationSerializer(many=True)})
+    def get(self, request, **kwargs):
+        print(kwargs)
         q = Vocation.objects.all().order_by('id')
         pg = PageNumberPagination()
         p = pg.paginate_queryset(queryset=q, request=request, view=self)
@@ -27,17 +32,19 @@ class VocationClass(APIView):
 
     @swagger_auto_schema(request_body=openapi.Schema(
         type=openapi.TYPE_OBJECT,
-        # required=['phone'],
-        properties={'job': openapi.Schema(type=openapi.TYPE_STRING),
-                    'title': openapi.Schema(type=openapi.TYPE_STRING),
-                    'payment': openapi.Schema(type=openapi.TYPE_INTEGER),
-                    # 'info': openapi.Schema(type=openapi.TYPE_ARRAY({
-                    #     'name': openapi.Schema(type=openapi.TYPE_STRING),
-                    #     'age': openapi.Schema(type=openapi.TYPE_INTEGER),
-                    #     'hireDate': openapi.Schema(type=openapi.TYPE_STRING),
-                    # })),
-                    }
-    ), operation_summary='新增员工信息', tags=['info'])
+        required=['job', 'title', 'payment'],
+        properties={'job': openapi.Schema(type=openapi.TYPE_STRING, description='部门'),
+                    'title': openapi.Schema(type=openapi.TYPE_STRING, description='岗位名称'),
+                    'payment': openapi.Schema(type=openapi.TYPE_INTEGER, description='薪资', default=2000),
+                    'info': openapi.Schema(
+                        type=openapi.TYPE_OBJECT,
+                        required=['name', 'age', 'hireDate'],
+                        properties={
+                            'name': openapi.Schema(type=openapi.TYPE_STRING, description='姓名'),
+                            'age': openapi.Schema(type=openapi.TYPE_INTEGER, description='年龄'),
+                            'hireDate': openapi.Schema(type=openapi.TYPE_STRING, description='入职时间'),
+                        })
+                    }), operation_summary='新增员工信息', tags=['info'], operation_description="这里是描述！")
     def post(self, request):
         data = request.data
         if not data:
