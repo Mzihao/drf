@@ -9,12 +9,14 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import api_view, action
 from rest_framework.permissions import IsAdminUser
 from index.permissions import IsAdminUserOrReadOnly
+from utils import response_json
 
 
 class VocationClass(APIView):
     # permission_classes = [IsAdminUser]
     permission_classes = [IsAdminUserOrReadOnly]
 
+    @response_json
     @swagger_auto_schema(manual_parameters=[
         openapi.Parameter('id', openapi.IN_PATH, description='编号', type=openapi.TYPE_INTEGER, required=True),
         openapi.Parameter('page', openapi.IN_QUERY, description='页数', type=openapi.TYPE_INTEGER, required=False),
@@ -27,8 +29,10 @@ class VocationClass(APIView):
         p = pg.paginate_queryset(queryset=q, request=request, view=self)
         # serializer = MySerializer(instance=p, many=True)
         serializer = VocationSerializer(instance=p, many=True)
-        return Response(serializer.data)
+        return serializer.data
+        # return Response(serializer.data)
 
+    # @response_json
     @swagger_auto_schema(request_body=openapi.Schema(
         type=openapi.TYPE_OBJECT,
         required=['job', 'title', 'payment'],
@@ -48,7 +52,7 @@ class VocationClass(APIView):
         tags=['info'],
         operation_description="这里是描述！",
         responses={200: VocationSerializer(many=True)})
-    def post(self, request):
+    def post(self, request, **kwargs):
         data = request.data
         if not data:
             return Response({'msg': 'hello Martin', 'code': 200, 'tip': '你没有填信息哦'}, status=200)
