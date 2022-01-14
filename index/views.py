@@ -1,6 +1,5 @@
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-
 from .models import PersonInfo, Vocation
 from .serializers import VocationSerializer
 from rest_framework.views import APIView
@@ -44,7 +43,11 @@ class VocationClass(APIView):
                             'age': openapi.Schema(type=openapi.TYPE_INTEGER, description='年龄'),
                             'hireDate': openapi.Schema(type=openapi.TYPE_STRING, description='入职时间'),
                         })
-                    }), operation_summary='新增员工信息', tags=['info'], operation_description="这里是描述！")
+                    }),
+        operation_summary='新增员工信息',
+        tags=['info'],
+        operation_description="这里是描述！",
+        responses={200: VocationSerializer(many=True)})
     def post(self, request):
         data = request.data
         if not data:
