@@ -92,9 +92,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'DRF_study',
-        'USER': 'ngt',
-        'PASSWORD': 'ngt777',
-        'HOST': '119.23.40.47',
+        'USER': 'root',
+        'PASSWORD': 'root',
+        'HOST': '127.0.0.1',
         'POST': 3306,
 
     }
