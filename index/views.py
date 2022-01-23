@@ -18,12 +18,11 @@ class VocationClass(APIView):
 
     @response_json
     @swagger_auto_schema(manual_parameters=[
-        openapi.Parameter('id', openapi.IN_PATH, description='编号', type=openapi.TYPE_INTEGER, required=True),
+        # openapi.Parameter('id', openapi.IN_PATH, description='编号', type=openapi.TYPE_INTEGER, required=True),
         openapi.Parameter('page', openapi.IN_QUERY, description='页数', type=openapi.TYPE_INTEGER, required=False),
         openapi.Parameter('pageSize', openapi.IN_QUERY, description='size', type=openapi.TYPE_INTEGER, required=False)
     ], tags=['info'], operation_summary='查询员工信息', responses={200: VocationSerializer(many=True)})
     def get(self, request, **kwargs):
-        print(kwargs)
         q = Vocation.objects.all().order_by('id')
         pg = PageNumberPagination()
         p = pg.paginate_queryset(queryset=q, request=request, view=self)
