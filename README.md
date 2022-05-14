@@ -36,4 +36,5 @@ python manage.py runserver
 
 ## docker run
 docker build -t drf:latest .
+
 docker run -it -rm -p 8080:8080 drf
