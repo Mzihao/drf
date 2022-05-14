@@ -38,3 +38,9 @@ python manage.py runserver
 docker build -t drf:latest .
 
 docker run -it -rm -p 8080:8080 drf
+
+## 预览
+http://localhost:8080/cached/swagger/
+
+## 运行图
+![demo1](https://github.com/Mzihao/drf/blob/master/screenshots/img.png)
