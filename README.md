@@ -42,7 +42,7 @@ python manage.py runserver
 ```shell
 docker build -t drf:latest .
 
-docker run -it -rm -p 8080:8080 drf
+docker run -it -p 8080:8080 drf
 ```
 
 ## 预览
