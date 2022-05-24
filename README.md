@@ -15,6 +15,9 @@ python 3.9
 ## 安装库
 ```shell
 pip install -r requirement.txt
+
+#豆瓣镜像
+pip install -i https://pypi.doubanio.com/simple/ -r requirements.txt
 ```
 
 ## 数据库连接
