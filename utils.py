@@ -35,7 +35,6 @@ def convert_upper_case_to_snake_case(string):
 
 def lazy_import(service_name):
     """
-    物流服务懒加载
     :param service_name: 服务名称
     :return: 服务类对象
     """
